@@ -13,3 +13,12 @@
     font-display: block;
     margin-bottom: 8rem;
 }
+
+.container {
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}

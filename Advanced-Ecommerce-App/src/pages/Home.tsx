@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { fetchProducts } from '../services/api';
 import ProductCard from "../components/ProductCard";
 import styles from './Home.module.css';
+import CategoryFilter from "../components/CategoryFilter";
 
 
 const Home: React.FC = () => {
@@ -31,6 +32,7 @@ const Home: React.FC = () => {
                         />
                     </div>
                 ))}
+                <CategoryFilter/>
             </div>
         </div>
     );

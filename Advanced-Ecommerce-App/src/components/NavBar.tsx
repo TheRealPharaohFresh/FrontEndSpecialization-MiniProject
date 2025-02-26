@@ -1,6 +1,6 @@
 import { Nav, Navbar } from 'react-bootstrap';
 import logo from '../assets/logo.jpg';
-import styles from './NavBar.module.css';
+import styles from '../styles/NavBar.module.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { selectCartItemsCount } from '../redux/cartSlice';
