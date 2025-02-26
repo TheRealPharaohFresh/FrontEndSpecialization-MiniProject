@@ -2,9 +2,8 @@ import React from "react";
 import { useQuery } from 'react-query';
 import { fetchProducts } from '../services/api';
 import ProductCard from "../components/ProductCard";
-import styles from './Home.module.css';
+import styles from '../styles/Home.module.css';
 import CategoryFilter from "../components/CategoryFilter";
-
 
 const Home: React.FC = () => {
     const { data: products, isLoading, error } = useQuery({
@@ -16,14 +15,14 @@ const Home: React.FC = () => {
     if (error) return <p>Something went wrong....</p>;
 
     return (
-        <div className="container">
+        <div className={styles.container}>
             <h1 className={styles.heading}>Best Product Collection</h1>
             <h2 className={styles.heading2}>Welcome To Unique Where You Can Find The Finest Selection Of Clothing, Electronics, & Accessories!</h2>
 
-            <div className="row">
+            <div className={styles.row}>
                 {products?.map((product) => (
-                    <div key={product.id} className="col-md-4 mb-4">
-                        <ProductCard
+                    <div key={product.id} className={styles['product-card']}>
+                        <ProductCard class
                             id={product.id}
                             title={product.title}
                             description={product.description}
@@ -32,11 +31,10 @@ const Home: React.FC = () => {
                         />
                     </div>
                 ))}
-                <CategoryFilter/>
+                <CategoryFilter />
             </div>
         </div>
     );
 };
-
 
 export default Home;
