@@ -9,13 +9,17 @@ const NavBar = () => {
     const cartItemsCount = useSelector((state: RootState) => selectCartItemsCount(state));
 
     return (
-        <Navbar className={styles.navbar}  variant="dark">
+        <Navbar className={styles.navbar} variant="dark">
             <Navbar.Brand href="/">
                 <img src={logo} alt="logo" className={styles.logo} />
             </Navbar.Brand>
             <Nav className="mr-auto">
-                <Nav.Link className={styles.navLinks} href="/">HomePage</Nav.Link>
+                <Nav.Link className={styles.navLinks} href="/">Home</Nav.Link>
                 <Nav.Link className={styles.navLinks} href="/cart">Cart ({cartItemsCount})</Nav.Link>
+                <Nav.Link className={styles.navLinks} href="/checkout">Checkout</Nav.Link>
+                <Nav.Link className={styles.navLinks} href="/product-management">Product Management</Nav.Link>
+                <Nav.Link className={styles.navLinks} href="/orders">Order History</Nav.Link>
+                <Nav.Link className={styles.navLinks} href="/login">Logout</Nav.Link>
             </Nav>
         </Navbar>
     );

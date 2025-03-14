@@ -6,7 +6,9 @@ import store from "./redux/store";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
 const queryClient = new QueryClient();
+
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
