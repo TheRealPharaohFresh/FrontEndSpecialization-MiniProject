@@ -1,7 +1,7 @@
 import { Card, Button } from "react-bootstrap";
 import { useDispatch} from "react-redux";
 import { addToCart } from "../redux/cartSlice";
-import styles from '../styles/ProductCard.module.css';
+import styles from "../styles/ProductCard.module.css"
 
 
 
