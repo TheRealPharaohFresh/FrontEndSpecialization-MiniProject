@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../config/firebaseConfig';
-import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { deleteUser } from '../services/userServices';
 
 interface User {
   id?: string; // id is optional, as it will only be available after data is fetched
@@ -20,11 +21,7 @@ const DisplayData = () => {
     alert("User updated successfully!");
   };
 
-  // Delete user function
-  const deleteUser = async (userId: string) => {
-    await deleteDoc(doc(db, 'users', userId));
-    alert("User deleted successfully!");
-  };
+  
 
   useEffect(() => {
     const fetchData = async () => {

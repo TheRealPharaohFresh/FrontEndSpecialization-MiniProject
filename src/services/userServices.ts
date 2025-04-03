@@ -1,6 +1,7 @@
 import { db } from '../config/firebaseConfig';
 import { doc, setDoc, deleteDoc} from 'firebase/firestore';
 import {deleteUser as firebaseDeleteUser} from 'firebase/auth';
+import { auth } from '../config/firebaseConfig';
 
 
 export const createUser = async (userId: string, userData: { name: string; email: string; age?: number }) => {
