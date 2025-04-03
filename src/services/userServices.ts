@@ -1,5 +1,7 @@
 import { db } from '../config/firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc} from 'firebase/firestore';
+import {deleteUser as firebaseDeleteUser} from 'firebase/auth';
+
 
 export const createUser = async (userId: string, userData: { name: string; email: string; age?: number }) => {
     if (!userId) throw new Error("User ID is required");
@@ -18,3 +20,22 @@ export const createUser = async (userId: string, userData: { name: string; email
     }
 };
 
+export const deleteUser = async (userId: string) => {
+    if (!userId) throw new Error("User ID is required");
+
+    try {
+        // Delete user from Firestore
+        await deleteDoc(doc(db, 'users', userId));
+
+        // Delete user from Firebase Authentication
+        const user = auth.currentUser;
+        if (user && user.uid === userId) {
+            await firebaseDeleteUser(user);
+        }
+
+        console.log('✅ User deleted successfully');
+    } catch (error) {
+        console.error('❌ Error deleting user:', error);
+        throw error;
+    }
+};

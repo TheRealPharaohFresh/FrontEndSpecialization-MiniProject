@@ -52,7 +52,7 @@ function App() {
         <Route path='product-management' element={<ProductManagement/>} />
         <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
         <Route path='/orders' element={<OrdersPage/>} />
-        <Route  path='/orders/:orderId' element={<OrderDetailsPage/>} />
+        <Route  path='/order/:orderId' element={<OrderDetailsPage/>} />
       </Routes>
     </Router>
   );

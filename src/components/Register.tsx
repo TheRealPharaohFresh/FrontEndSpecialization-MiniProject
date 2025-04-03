@@ -34,34 +34,49 @@ const Register = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleRegister}>
+        <label htmlFor="name">Name:</label>
         <input
+          id="name"
           type="text"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
+
+        <label htmlFor="email">Email:</label>
         <input
+          id="email"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <input type="age"
+
+        <label htmlFor="age">Age:</label>
+        <input
+          id="age"
+          type="number"
           placeholder="Age"
           value={age}
           onChange={(e) => setAge(Number(e.target.value))}
           required
-         />
+        />
+
+        <label htmlFor="password">Password:</label>
         <input
+          id="password"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button className={styles.button} type="submit" disabled={loading}>{loading ? 'Registering....': 'Register'}</button>
+
+        <button className={styles.button} type="submit" disabled={loading}>
+          {loading ? "Registering...." : "Register"}
+        </button>
         {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>
