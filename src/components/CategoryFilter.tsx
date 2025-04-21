@@ -1,4 +1,4 @@
-import { fetchCategories, fetchProductsByCategory } from "../services/api";
+import { fetchCategories, fetchProductsByCategory } from "../services/productServices";
 import { useQuery } from 'react-query'; 
 import { useState } from 'react';
 import styles from '../styles/CategoryFilter.module.css';

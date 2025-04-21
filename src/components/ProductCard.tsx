@@ -6,7 +6,7 @@ import styles from "../styles/ProductCard.module.css"
 
 
 interface ProductCardProps {
-    id: number;
+    id: string;
     title: string;
     description: string;
     price: number;

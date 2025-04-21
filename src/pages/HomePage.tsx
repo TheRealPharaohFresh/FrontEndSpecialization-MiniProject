@@ -4,7 +4,7 @@ import ProductCard from '../components/ProductCard';
 import { fetchProducts } from '../services/productServices';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
   description: string;
