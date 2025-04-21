@@ -6,7 +6,8 @@ import { db } from "../config/firebaseConfig";
 import styles from "../styles/Login.module.css";
 import Register from "../components/Register";
 import DisplayData from "../components/DisplayData";  
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";  
+import { createUserIfNotExists } from "../utils/createUserIfNotExist";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -16,16 +17,27 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const navigate = useNavigate(); // Use navigate hook for navigation
+
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user);
-      await fetchUserData(userCredential.user.uid);
+      const firebaseUser = userCredential.user;
+
+      // Ensure the user document exists in Firestore
+      await createUserIfNotExists(firebaseUser);
+
+      // Set the user and fetch their data
+      setUser(firebaseUser);
+      await fetchUserData(firebaseUser.uid);
+
       alert("Login successful!");
-      <Navigate to='/' replace/>;
+
+      // Navigate to the home page after successful login
+      navigate('/', { replace: true });
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -33,8 +45,6 @@ const Login = () => {
     }
   };
 
-
- 
   const fetchUserData = async (userId: string) => {
     try {
       const userDoc = await getDoc(doc(db, "users", userId));
@@ -59,14 +69,16 @@ const Login = () => {
     }
   };
 
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
         await fetchUserData(currentUser.uid);
+      } else {
+        setUserData(null);
       }
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -104,10 +116,13 @@ const Login = () => {
         </form>
       )}
 
-      {!user && <Register />}
+      {!user && <Register />} {/* Display Register component if no user */}
     </div>
   );
 };
 
 export default Login;
+
+
+
 

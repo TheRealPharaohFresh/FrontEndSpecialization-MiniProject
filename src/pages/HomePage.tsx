@@ -3,6 +3,7 @@ import styles from '../styles/Home.module.css';
 import ProductCard from '../components/ProductCard';
 import { fetchProducts } from '../services/productServices';
 
+
 interface Product {
   id: string;
   name: string;
@@ -14,14 +15,18 @@ interface Product {
 
 const Home: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true); // ✅ Add this
 
   useEffect(() => {
+    console.log("Loading products..."); // ✅ Debugging
     loadProducts();
   }, []);
 
   const loadProducts = async () => {
     const productList = await fetchProducts();
+    console.log('Fetched products:', productList); // ✅ Debugging
     setProducts(productList);
+    setLoading(false); // ✅ Move this after fetch
   };
 
   return (
@@ -32,12 +37,14 @@ const Home: React.FC = () => {
       </h2>
 
       <div className={styles.row}>
-        {products.length > 0 ? (
+        {loading ? (
+          <p>Loading products...</p> // ✅ Add loading feedback
+        ) : products.length > 0 ? (
           products.map((product, index) => (
             <ProductCard
-              key={product.id || `product-${index}`} // Fallback key
+              key={product.id || `product-${index}`}
               id={product.id}
-              title={product.name}   // Convert `name` to `title`
+              title={product.name}
               description={product.description}
               price={product.price}
               imageUrl={product.imageUrl}
@@ -52,3 +59,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
