@@ -26,7 +26,7 @@ describe("Cart Integration Test", () => {
   test("should add a product to the cart when 'Add to Cart' is clicked", () => {
     renderWithRedux(
       <ProductCard
-        id={1}
+        id={String(1)}
         title="Product A"
         description="Description of Product A"
         price={10}
@@ -43,7 +43,7 @@ describe("Cart Integration Test", () => {
 
     expect(state.cart.items.length).toBe(1);
     expect(state.cart.items[0]).toEqual({
-      id: 1,
+      id: "1",
       title: "Product A",
       description: "Description of Product A",
       price: 10,

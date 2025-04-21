@@ -2,22 +2,31 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 export interface Product {
-    id: number;
+    id: string;
     title: string;
     description: string;
     price: number;
     image: string;
 }
 
-
+// Load cart from sessionStorage with error handling
 const loadCartFromSession = (): Product[] => {
-    const savedCart = sessionStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+        const savedCart = sessionStorage.getItem("cart");
+        return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+        console.error("Error loading cart from sessionStorage:", error);
+        return [];
+    }
 };
 
-
+// Save cart to sessionStorage
 const saveCartToSession = (cart: Product[]) => {
-    sessionStorage.setItem("cart", JSON.stringify(cart));
+    try {
+        sessionStorage.setItem("cart", JSON.stringify(cart));
+    } catch (error) {
+        console.error("Error saving cart to sessionStorage:", error);
+    }
 };
 
 interface CartState {
@@ -25,7 +34,7 @@ interface CartState {
 }
 
 const initialState: CartState = {
-    items: loadCartFromSession(), 
+    items: loadCartFromSession(), // Load cart from sessionStorage on store initialization
 };
 
 const cartSlice = createSlice({
@@ -33,23 +42,29 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action: PayloadAction<Product>) => {
-            console.log("Add to cart", action.payload);
+            console.log("Adding to cart", action.payload);
             state.items.push(action.payload);
-            saveCartToSession(state.items); 
+            saveCartToSession(state.items); // Persist the updated cart to sessionStorage
         },
-        removeFromCart: (state, action: PayloadAction<number>) => {
-            console.log("Remove from cart", action.payload);
+        removeFromCart: (state, action: PayloadAction<string>) => {
+            console.log("Removing from cart", action.payload);
             state.items = state.items.filter(item => item.id !== action.payload);
-            saveCartToSession(state.items); 
+            saveCartToSession(state.items); // Persist the updated cart to sessionStorage
         },
         clearCart: (state) => {
-            console.log("Cart cleared");
+            console.log("Clearing cart");
             state.items = [];
-            saveCartToSession(state.items);
+            saveCartToSession(state.items); // Persist the cleared cart to sessionStorage
         },
     },
 });
 
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+// Selectors
 export const selectCartItemsCount = (state: RootState) => state.cart.items.length;
+export const selectCartItems = (state: RootState) => state.cart.items;
+
+export const { addToCart, removeFromCart, clearCart } = cartSlice.actions; // Export actions
 export default cartSlice.reducer;
+
+
+

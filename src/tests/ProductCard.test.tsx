@@ -15,7 +15,7 @@ const setupStore = () =>
             render(
                 <Provider store={store}>
                     <ProductCard
-                        id={1}
+                        id={String(1)}
                         title="Product A"
                         description="Test description"
                         price={10}

@@ -1,7 +1,7 @@
 import { fetchProducts } from "../services/productServices";
 import { getDocs, collection, getFirestore } from "firebase/firestore";
 
-
+// Mock Firebase functions
 jest.mock("firebase/firestore", () => ({
   getDocs: jest.fn(),
   collection: jest.fn(), 
@@ -9,7 +9,7 @@ jest.mock("firebase/firestore", () => ({
 }));
 
 beforeEach(() => {
-  jest.clearAllMocks(); 
+  jest.clearAllMocks(); // Clear mocks before each test
 });
 
 describe("fetchProducts", () => {
@@ -45,6 +45,7 @@ describe("fetchProducts", () => {
     expect(getDocs).toHaveBeenCalledTimes(1);  // Ensure getDocs is called exactly once
   });
 });
+
 
 
 

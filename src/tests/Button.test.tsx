@@ -24,7 +24,7 @@ describe("ProductCard Component", () => {
   test("dispatches addToCart action when 'Add to Cart' is clicked", () => {
     renderWithRedux(
       <ProductCard
-        id={1}
+        id={String(1)}
         title="Product A"
         description="Test description"
         price={10}
@@ -43,7 +43,7 @@ describe("ProductCard Component", () => {
     //this makes sure the item is added to the cart
     expect(state.cart.items.length).toBe(1);
     expect(state.cart.items[0]).toEqual({
-      id: 1,
+      id: "1",
       title: "Product A",
       description: "Test description",
       price: 10,
