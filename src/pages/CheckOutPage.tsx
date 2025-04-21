@@ -7,7 +7,7 @@ import { getAuth } from 'firebase/auth';
 import styles from '../styles/CheckOutPage.module.css';
 
 interface Product {
-    id: number;
+    id: string;
     title: string;
     description: string;
     price: number;

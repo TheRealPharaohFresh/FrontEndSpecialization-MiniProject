@@ -9,16 +9,20 @@ export interface Product {
     image: string;
 }
 
-// Load cart from sessionStorage with error handling
-const loadCartFromSession = (): Product[] => {
+export const loadCartFromSession = (): Product[] => {
     try {
-        const savedCart = sessionStorage.getItem("cart");
-        return savedCart ? JSON.parse(savedCart) : [];
-    } catch (error) {
-        console.error("Error loading cart from sessionStorage:", error);
-        return [];
+      const stored = sessionStorage.getItem("cart");
+      const parsed = stored ? JSON.parse(stored) : [];
+      return parsed.map((item: any) => ({
+        ...item,
+        id: String(item.id),
+      }));
+    } catch (e) {
+      console.error("Failed to load cart from sessionStorage", e);
+      return [];
     }
-};
+  };
+  
 
 // Save cart to sessionStorage
 const saveCartToSession = (cart: Product[]) => {
