@@ -56,7 +56,8 @@ jobs:
 Deployment
 The application is deployed using **Vercel**, with automatic builds and tests on every push to `main` or `master`.
 
-Live Link: [View the application](eccomerceapp1.vercel.app)
+Live Link: [View the application](https://eccomerceapp1.vercel.app/)
+
 
  Author
 Donald Clemons
