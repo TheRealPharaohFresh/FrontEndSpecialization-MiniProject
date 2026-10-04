@@ -1,41 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import type { FormEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearCart } from '../redux/cartSlice';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { createOrder } from '../services/orderServices';
 import { getAuth } from 'firebase/auth';
 import styles from '../styles/CheckOutPage.module.css';
-
-interface Product {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    quantity: number;
-    image: string;
-}
+import type { RootState } from '../redux/store';
 
 const CheckoutPage: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [cart, setCart] = useState<Product[]>([]);
+    const cart = useSelector((state: RootState) => state.cart.items);
 
-    useEffect(() => {
-        const savedCart = sessionStorage.getItem("cart");
-        if (savedCart) {
-            try {
-                setCart(JSON.parse(savedCart));
-            } catch (error) {
-                console.error("Failed to parse cart:", error);
-                setCart([]); 
-            }
-        }
-    }, []);
-
-    const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const totalPrice = cart.reduce((acc, item) => acc + item.price * (item.quantity ?? 1), 0);
 
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         const auth = getAuth();
         const user = auth.currentUser;
@@ -51,7 +31,7 @@ const CheckoutPage: React.FC = () => {
 
         const totalPrice = cart.reduce((acc, item) => {
             const price = item.price != null ? parseFloat(item.price.toString()) : 0; // Ensure price is a number or 0
-            const quantity = (item.quantity != null && item.quantity > 0) ? parseInt(item.quantity.toString(), 10) : 1; // Default quantity to 1 if invalid
+            const quantity = item.quantity != null && item.quantity > 0 ? item.quantity : 1;
             
             console.log("Item Price:", price, "Quantity:", quantity); // Log each item to check values
         
@@ -73,7 +53,7 @@ const CheckoutPage: React.FC = () => {
                 id: item.id,
                 title: item.title,
                 price: item.price,
-                quantity: item.quantity ?? 1,
+                quantity: item.quantity != null && item.quantity > 0 ? item.quantity : 1,
                 image: item.image || "https://via.placeholder.com/100" // Default image if undefined
             })) : [], 
             totalPrice: parseFloat(totalPrice.toFixed(2)), // Ensure it's a valid number
@@ -98,6 +78,8 @@ const CheckoutPage: React.FC = () => {
     
     
 
+    if (cart.length === 0) return <Navigate to="/cart" replace />;
+
     return (
         <div className={styles.container}>
             <h1>Checkout</h1>
@@ -115,7 +97,7 @@ const CheckoutPage: React.FC = () => {
                                 <div>
                                     <h3>{item.title}</h3>
                                     <p>Price: ${item.price.toFixed(2)}</p>
-                                    <p>Quantity: {item.quantity}</p>
+                                    <p>Quantity: {item.quantity ?? 1}</p>
                                 </div>
                             </li>
                         ))}

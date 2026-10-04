@@ -6,6 +6,7 @@ Unique Store is a React e-commerce application with a product catalog, category 
 
 - Browse the product collection and filter products by category.
 - Add products to a session-persisted shopping cart and place orders.
+- Add products to a session-persisted shopping cart and continue to checkout from the cart; empty carts return to the cart page.
 - Register and sign in with Firebase Authentication.
 - Manage products and review order history.
 - Run component, cart, and product-fetch tests with Jest.
