@@ -42,15 +42,15 @@ const CategoryFilter: React.FC = () => {
             </div>
             <div className="row mt-4">
                 {productsLoading && <p>Loading products... please wait</p>}
-                {productsError && <p>Something went wrong...</p>}
-                {products?.map((product: any) => (
+                {productsError ? <p>Something went wrong...</p> : null}
+                {products?.map((product) => (
                     <div key={product.id} className="col-md-4 mb-4">
                         <ProductCard
                             id={product.id}
-                            title={product.title}
+                            title={product.name}
                             description={product.description}
                             price={product.price}
-                            imageUrl={product.image}
+                            imageUrl={product.imageUrl}
                         />
                     </div>
                 ))}

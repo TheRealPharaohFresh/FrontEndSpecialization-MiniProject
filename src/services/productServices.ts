@@ -1,9 +1,19 @@
 import { db } from "../config/firebaseConfig";
-import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc, query, where } from "firebase/firestore";
+
+export interface ProductData {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  stock: number;
+  category: string;
+  imageUrl: string;
+}
 
 // Get all products
 
-export const fetchProducts = async () => {
+export const fetchProducts = async (): Promise<ProductData[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, "products"));
     
@@ -14,10 +24,10 @@ export const fetchProducts = async () => {
 
       // Re-fetch after seeding
       const seededSnapshot = await getDocs(collection(db, "products"));
-      return seededSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      return seededSnapshot.docs.map(document => ({ id: document.id, ...document.data() } as ProductData));
     }
 
-    const productList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const productList = querySnapshot.docs.map(document => ({ id: document.id, ...document.data() } as ProductData));
     return productList || [];
 
   } catch (error) {
@@ -29,22 +39,29 @@ export const fetchProducts = async () => {
   
   
 
-export const fetchProductById = async (productId: string) => {
-    const productRef = doc(db, "products", productId);
-    const productSnap = await getDoc(productRef);
-    if (productSnap.exists()) {
-      return { id: productSnap.id, ...productSnap.data() };
-    } else {
-      throw new Error("Product not found");
-    }
-  };
+export const fetchProductById = async (productId: string): Promise<ProductData> => {
+  const productRef = doc(db, "products", productId);
+  const productSnap = await getDoc(productRef);
+  if (productSnap.exists()) {
+    return { id: productSnap.id, ...productSnap.data() } as ProductData;
+  }
+  throw new Error("Product not found");
+};
   
-  // export const fetchProductsByCategory = async (category: string) => {
-//     const querySnapshot = await getDocs(collection(db, "products"));
-//     return querySnapshot.docs
-//       .map(doc => ({ id: doc.id, ...doc.data() }))
-//       .filter(product => product.category === category);
-//   };
+export const fetchCategories = async (): Promise<string[]> => {
+  const snapshot = await getDocs(collection(db, "products"));
+  const categories = snapshot.docs
+    .map(document => document.data().category)
+    .filter((category): category is string => typeof category === "string");
+
+  return [...new Set(categories)];
+};
+
+export const fetchProductsByCategory = async (category: string): Promise<ProductData[]> => {
+  const productsQuery = query(collection(db, "products"), where("category", "==", category));
+  const snapshot = await getDocs(productsQuery);
+  return snapshot.docs.map(document => ({ id: document.id, ...document.data() } as ProductData));
+};
   
   export const createProduct = async (productData: { name: string; price: number; description: string; stock: number; category: string; imageUrl: string }) => {
     const productRef = await addDoc(collection(db, "products"), productData);
@@ -69,7 +86,7 @@ export const seedProductsFromAPI = async () => {
     const res = await fetch("https://fakestoreapi.com/products");
     const products = await res.json();
 
-    for (let product of products) {
+    for (const product of products) {
       await addDoc(collection(db, "products"), {
         name: product.title,
         description: product.description,

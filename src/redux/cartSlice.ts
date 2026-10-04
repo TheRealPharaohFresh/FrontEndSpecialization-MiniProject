@@ -11,17 +11,30 @@ export interface Product {
 
 export const loadCartFromSession = (): Product[] => {
     try {
-      const stored = sessionStorage.getItem("cart");
-      const parsed = stored ? JSON.parse(stored) : [];
-      return parsed.map((item: any) => ({
-        ...item,
-        id: String(item.id),
-      }));
+        const stored = sessionStorage.getItem("cart");
+        const parsed: unknown = stored ? JSON.parse(stored) : [];
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter(isStoredProduct).map((item) => ({
+            ...item,
+            id: String(item.id),
+        }));
     } catch (e) {
-      console.error("Failed to load cart from sessionStorage", e);
-      return [];
+        console.error("Failed to load cart from sessionStorage", e);
+        return [];
     }
-  };
+};
+
+type StoredProduct = Omit<Product, "id"> & { id: string | number };
+
+const isStoredProduct = (item: unknown): item is StoredProduct => {
+    if (typeof item !== "object" || item === null) return false;
+    const product = item as Record<string, unknown>;
+    return (typeof product.id === "string" || typeof product.id === "number")
+        && typeof product.title === "string"
+        && typeof product.description === "string"
+        && typeof product.price === "number"
+        && typeof product.image === "string";
+};
   
 
 // Save cart to sessionStorage

@@ -1,7 +1,8 @@
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import type { User } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 
-export const createUserIfNotExists = async (user) => {
+export const createUserIfNotExists = async (user: User): Promise<void> => {
   const userRef = doc(db, "users", user.uid);
   const userSnap = await getDoc(userRef);
 

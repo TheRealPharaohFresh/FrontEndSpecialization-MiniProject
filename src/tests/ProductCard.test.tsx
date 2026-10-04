@@ -31,4 +31,24 @@ const setupStore = () =>
             // This is me checking for the price
             expect(screen.getByText(/Price: \$10.00/i)).toBeInTheDocument();
         });
+
+        test('shortens long descriptions for the product card', () => {
+            const store = setupStore();
+            const description = 'A useful product description. '.repeat(12);
+
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        id="long-description"
+                        title="Product B"
+                        description={description}
+                        price={12}
+                        imageUrl="test-image.jpg"
+                    />
+                </Provider>
+            );
+
+            expect(screen.getByText((content) => content.startsWith('A useful product description.') && content.endsWith('...'))).toBeInTheDocument();
+            expect(screen.queryByText(description)).not.toBeInTheDocument();
+        });
     });

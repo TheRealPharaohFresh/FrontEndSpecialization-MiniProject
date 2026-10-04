@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "test": "jest",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "preview": "vite preview",
     "build:skip-ts": "TS_SKIP=true react-scripts build"
   },

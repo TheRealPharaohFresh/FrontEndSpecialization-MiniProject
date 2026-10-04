@@ -1,11 +1,11 @@
 import { fetchProducts } from "../services/productServices";
-import { getDocs, collection, getFirestore } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 
 // Mock Firebase functions
 jest.mock("firebase/firestore", () => ({
   getDocs: jest.fn(),
   collection: jest.fn(), 
-  getFirestore: jest.fn(() => "mockedFirestore"), // Mocked Firestore instance
+  getFirestore: jest.fn(() => "mockedFirestore"),
 }));
 
 beforeEach(() => {

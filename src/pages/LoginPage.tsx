@@ -13,7 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
-  const [userData, setUserData] = useState<{ name: string; email: string } | null>(null);
+  const [userData, setUserData] = useState<{ name: string; email: string; age?: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -38,8 +38,8 @@ const Login = () => {
 
       // Navigate to the home page after successful login
       navigate('/', { replace: true });
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed.");
     } finally {
       setLoading(false);
     }
@@ -64,8 +64,8 @@ const Login = () => {
       setUser(null);
       setUserData(null);
       alert("Logged out!");
-    } catch (err: any) {
-      console.error("Logout error:", err.message);
+    } catch (err) {
+      console.error("Logout error:", err instanceof Error ? err.message : err);
     }
   };
 

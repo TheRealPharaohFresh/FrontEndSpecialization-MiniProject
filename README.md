@@ -1,65 +1,49 @@
- Advanced E-Commerce App
+# Unique Store
 
-Description
-This project is an e-commerce application built using **React, Redux Toolkit, React Query, and Firebase**. It includes a product catalog, shopping cart, user authentication, and order management.
- Features
-- User Authentication: Users can register, log in, and manage profiles with Firebase Authentication.
-- Firestore Database: Products, user data, and orders are stored in Firestore.
-- Shopping Cart & Checkout: Items persist across sessions, and users can complete purchases.
-- Product Management: Users can add, update, and delete products.
-- Order History: Users can view past orders and details.
-- Testing: A unit test was added for the "Add to Cart" button to verify UI functionality.
-- CI/CD: Automated testing and deployment are handled via GitHub Actions and Vercel.
+Unique Store is a React e-commerce application with a product catalog, category browsing, cart, checkout, account authentication, product management, and order history. It uses Firebase Authentication and Cloud Firestore for account and store data.
 
- CI/CD Workflow
-This project uses GitHub Actions for automated testing and deployment with Vercel. Below is the workflow configuration:
+## Features
 
+- Browse the product collection and filter products by category.
+- Add products to a session-persisted shopping cart and place orders.
+- Register and sign in with Firebase Authentication.
+- Manage products and review order history.
+- Run component, cart, and product-fetch tests with Jest.
 
-name: Vercel Deployment
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-on:
-  push:
-    branches:
-      - main
-      - master
+## Requirements
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node JS
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      - run: npm install
-      - run: npm test
-      - run: npm run build
-      
-  Deploy-Production:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+- Node.js 20 or later
+- npm
+- A Firebase project with Authentication (email/password) and Cloud Firestore enabled
 
+The Firebase web configuration is in `src/config/firebaseConfig.ts`. Configure Firestore collections and security rules for `products`, `users`, and `orders` before using the application with live data.
 
-Deployment
-The application is deployed using **Vercel**, with automatic builds and tests on every push to `main` or `master`.
+## Getting Started
 
-Live Link: [View the application](https://eccomerceapp1.vercel.app/)
+```sh
+npm ci
+npm run dev
+```
 
+Vite prints the local development URL after the server starts.
 
- Author
+## Project Checks
+
+```sh
+npm test -- --runInBand
+npm run lint
+npm run typecheck
+npm run build
+```
+
+The GitHub Actions workflow runs tests, lint, type-checking, and a production build on pushes to `main` and `master`. After those checks pass, it deploys to Vercel. Deployment requires the `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, and `VERCEL_TOKEN` repository secrets.
+
+## Deployment
+
+The production site is configured at [eccomerceapp1.vercel.app](https://eccomerceapp1.vercel.app/).
+
+## Author
+
 Donald Clemons
 
 

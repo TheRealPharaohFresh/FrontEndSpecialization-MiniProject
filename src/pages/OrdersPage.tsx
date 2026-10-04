@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { fetchOrdersByUser } from "../services/orderServices";
+import { fetchOrdersByUser, OrderRecord } from "../services/orderServices";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-interface Order {
-  id: string;
-  totalPrice: number;
-  createdAt: { seconds: number };
-}
-
 const OrdersPage: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const auth = getAuth();
@@ -50,7 +44,7 @@ const OrdersPage: React.FC = () => {
           {orders.map((order) => (
             <li key={order.id}>
               <p><strong>Order ID:</strong> {order.id}</p>
-              <p><strong>Date:</strong> {new Date(order.createdAt.seconds * 1000).toLocaleDateString()}</p>
+              <p><strong>Date:</strong> {order.createdAt.toDate().toLocaleDateString()}</p>
               <p><strong>Total Price:</strong> ${order.totalPrice.toFixed(2)}</p>
               <button onClick={() => navigate(`/order/${order.id}`)}> 
                 View Details

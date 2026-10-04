@@ -24,8 +24,8 @@ const Register = () => {
       await createUser(userId, { name, email, age });
 
       alert("Registration successful!");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Registration failed.");
     } finally {
       setLoading(false);
     }

@@ -89,7 +89,7 @@ const CheckoutPage: React.FC = () => {
             alert('Order placed successfully!');
             dispatch(clearCart());
             sessionStorage.removeItem("cart");
-            navigate(`/orders/${orderId}`);
+            navigate(`/order/${orderId}`);
         } catch (error) {
             console.error('Failed to place order:', error);
             alert('Failed to place order. Please try again later.');

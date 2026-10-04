@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "../redux/cartSlice";
 import ProductCard from "../components/ProductCard";
-import type { RootState } from "../redux/store";
 
 
 // Function to create a test store instance
@@ -35,7 +34,7 @@ describe("Cart Integration Test", () => {
     );
 
     // Click "Add to Cart"
-    const addToCartButton = screen.getByText(/Add to Cart 🛒/i);
+    const addToCartButton = screen.getByRole("button", { name: "Add to Cart" });
     fireEvent.click(addToCartButton);
 
     // Get updated cart state

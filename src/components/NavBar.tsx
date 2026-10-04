@@ -35,18 +35,18 @@ const NavBar = () => {
             <Navbar.Brand href="/">
                 <img src={logo} alt="logo" className={styles.logo} />
             </Navbar.Brand>
-            <Nav className="mr-auto">
-                <Nav.Link className={styles.navLinks} href="/">Home</Nav.Link>
-                <Nav.Link className={styles.navLinks} href="/cart">Cart ({cartItemsCount})</Nav.Link>
-                <Nav.Link className={styles.navLinks} href="/checkout">Checkout</Nav.Link>
-                <Nav.Link className={styles.navLinks} href="/product-management">Product Management</Nav.Link>
-                <Nav.Link className={styles.navLinks} href="/orders">Order History</Nav.Link>
+            <Nav className={styles.links}>
+                <Nav.Link className={styles.navLink} href="/">Home</Nav.Link>
+                <Nav.Link className={styles.navLink} href="/cart">Cart ({cartItemsCount})</Nav.Link>
+                <Nav.Link className={styles.navLink} href="/checkout">Checkout</Nav.Link>
+                <Nav.Link className={styles.navLink} href="/product-management">Product Management</Nav.Link>
+                <Nav.Link className={styles.navLink} href="/orders">Order History</Nav.Link>
                 {user ? (
-                    <Nav.Link className={styles.navLinks} onClick={handleLogout} style={{ cursor: "pointer" }}>
+                    <Nav.Link className={styles.navLink} onClick={handleLogout} style={{ cursor: "pointer" }}>
                         Logout
                     </Nav.Link>
                 ) : (
-                    <Nav.Link className={styles.navLinks} href="/login">Login</Nav.Link>
+                    <Nav.Link className={styles.navLink} href="/login">Login</Nav.Link>
                 )}
             </Nav>
         </Navbar>

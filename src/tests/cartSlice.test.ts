@@ -1,7 +1,4 @@
 import cartReducer, {
-  addToCart,
-  removeFromCart,
-  clearCart,
   loadCartFromSession,
 } from "../redux/cartSlice";
 import { Product } from "../redux/cartSlice";
@@ -57,6 +54,12 @@ describe("Cart Slice - Integration Test", () => {
     const state = store.getState() as RootState;
 
     expect(state.cart.items).toEqual([]);
+  });
+
+  test("normalizes numeric persisted product IDs to strings", () => {
+    sessionStorage.setItem("cart", JSON.stringify([{ ...initialCart[0], id: 4 }]));
+
+    expect(loadCartFromSession()).toEqual(initialCart);
   });
 });
 

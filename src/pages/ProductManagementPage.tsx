@@ -57,7 +57,7 @@ interface Product {
 
 
   const handleUpdate = async () => {
-    if (editingProduct) {
+    if (editingProduct?.id) {
       await updateProduct(editingProduct.id, editingProduct);
       setEditingProduct(null); // Reset editing state
       loadProducts();
@@ -125,7 +125,7 @@ interface Product {
             <p>{product.description}</p>
             <p>Stock: {product.stock}</p>
             <button onClick={() => setEditingProduct(product)}>Edit</button>
-            <button onClick={() => handleDelete(product.id)}>Delete</button>
+            <button disabled={!product.id} onClick={() => product.id && handleDelete(product.id)}>Delete</button>
           </div>
         ))}
       </div>
